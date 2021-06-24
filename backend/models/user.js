@@ -1,7 +1,7 @@
 //importing different nodes
-const mongoose= require('mongoose')
-const jwt = require('jsonwebtoken')
-const Book= require('./book')
+import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
+import Book from './book.js';
 
 
 
@@ -72,6 +72,7 @@ userSchema.statics.findByCredentials = async (Email, password) => {
     return user
 }
 
+/*
 //deleting books of user
 userSchema.methods.toJSON = function () {
     const user = this
@@ -81,8 +82,8 @@ userSchema.methods.toJSON = function () {
     delete userObject.avatar
     return userObject
 }
-
+*/
 
 //trying up and exporting
 const User= mongoose.model('User', userSchema)
-module.exports=User
+export default User;

@@ -1,20 +1,25 @@
-const express = require('express')
-require('./src/db/mongoose')
-const app = express()
-const cors= require('cors')
-const port = 9000
+import express from 'express';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
 
-app.use(express.json())
-app.use(cors())
-const userRouter=require('./src/routers/user')
-app.use(userRouter)
-const bookRouter= require('./src/routers/book')
-app.use(bookRouter)
+const app = express();
+dotenv.config();
+
+app.use(bodyParser.json({limit: "30mb", extended: true}));
+app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
+app.use(cors());
+
+app.get('/', (req, res) => {
+  res.send('Welcome to the Bookstore');
+});
+
+const PORT = process.env.PORT || 5000;
 
 
-app.listen(port, ()=>{
-  console.log('Your projects is up and running!!!!!!')
-})
+mongoose.connect(process.env.CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})
+ .then(()=> app.listen(PORT, () => console.log(`Server Running on Port: ${PORT}`)))
+ .catch((error)=> console.log(error.message));
 
-
-//npm install --save cors
+mongoose.set('useFindAndModify', false);

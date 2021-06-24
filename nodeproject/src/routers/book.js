@@ -33,7 +33,7 @@ router.post('/books', auth, async (req,res)=>{
         await book.save()
         const allBooks=await Book.find({ForTaking:false, Subject:book.Subject})
         const idCombination= allBooks.forEach(async function(allBook){
-          let bookowner= await User.findOne({_id:allBook.Owner})
+        let bookowner= await User.findOne({_id:allBook.Owner})
 
         //  sendFirstEmail(bookowner, gamechanger,book.Subject, book.Professor)
         })

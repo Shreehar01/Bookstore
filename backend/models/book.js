@@ -1,6 +1,6 @@
 //importing nodes
-const mongoose= require('mongoose')
-const User= require('./user')
+import mongoose from 'mongoose';
+import User from './user.js';
 
 
 
@@ -39,6 +39,6 @@ const bookSchema= new mongoose.Schema({
 
 
 //tying and exporting the schema
-const Book=mongoose.model('Book', bookSchema)
-module.exports= Book
+const Book = mongoose.model('Book', bookSchema);
+export default Book;
 
