@@ -1,0 +1,9 @@
+export const AUTH = 'AUTH';
+export const LOGOUT = 'LOGOUT';
+
+export const CREATEHEART = 'CREATEHEART';
+export const UPDATEHEART = 'UPDATEHEART';
+export const DELETEHEART = 'DELETEHEART';
+export const FETCH_ALLHEART = 'FETCH_ALLHEART';
+export const HEARTPREDICTION = 'HEART_PREDICTION';
+export const GET_TOTALPAGES = 'GET_TOTALPAGES';
