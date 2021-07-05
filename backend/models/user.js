@@ -7,38 +7,35 @@ import Book from './book.js';
 
 //structuring the schema of the user database
 const userSchema= new mongoose.Schema({
-  Name:{
-    type: String,
-    trim: true
-  },
-  Email:{
-    type:String,
-   unique: true,
-    required: true,
-  },
-  Year:{
+  name:{
     type: String,
     required: true,
     trim: true
   },
-  Housing:{
-    type: String
+  collegeYear:{
+    type: String,
+    required: true,
+    trim: true
   },
-  Password:{
+  collegeName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  email:{
     type:String,
+    unique: true,
+    required: true,
+  },
+  password:{
+    type: String,
     required: true
-},
-tokens: [{
-      token: {
-          type: String
-      }
-  }],
-  avatar:{
-    type:Buffer
+  },
+  id: {
+    type: String
   }
-},{
-  timestamps: true
 })
+
 
 
 //linking two different databases
@@ -48,7 +45,7 @@ userSchema.virtual('books',{
   foreignField: 'Owner'
 })
 
-
+/*
 //generating authentication token
 userSchema.methods.generateAuthToken= async function(){
   const user= this
@@ -57,7 +54,6 @@ userSchema.methods.generateAuthToken= async function(){
   await user.save()
   return token
 }
-
 
 //verifying the login
 userSchema.statics.findByCredentials = async (Email, password) => {
@@ -72,7 +68,6 @@ userSchema.statics.findByCredentials = async (Email, password) => {
     return user
 }
 
-/*
 //deleting books of user
 userSchema.methods.toJSON = function () {
     const user = this

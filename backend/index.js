@@ -34,7 +34,7 @@ app.use('/insuranceposts', insuranceRoutes);
 */
 
 // app.use('/books', bookRoutes);
-// app.use('/login', userRoutes);
+app.use('/user', userRoutes);
 
 app.get('/', (req, res) => {
     res.send('Welcome to Bookstore');

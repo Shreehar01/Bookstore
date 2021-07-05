@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 // Base URL
-const API = axios.create({baseURL: "https://expert-ai-backend.herokuapp.com/"});
+const API = axios.create({baseURL: "http://localhost:5000"});
 
 // Adding headers to an API request.
-API.interceptors.request.use((req) =>{
+API.interceptors.request.use((req) => {
     if(localStorage.getItem('profile')) {
         req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
     }
@@ -14,6 +14,7 @@ API.interceptors.request.use((req) =>{
 // User 
 export const signIn = (formData) => API.post('/user/signin', formData);
 export const signUp = (formData) => API.post('/user/signup', formData);
+export const updateInformation = (personalInformation) => API.get('/user/updateinformation', personalInformation);
 
 // HeartPost
 export const fetchHeartPosts = (pageNumber) => API.get(`/heartposts?page=${pageNumber}`);

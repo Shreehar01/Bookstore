@@ -1,8 +1,17 @@
 import React from 'react';
 import {Navbar, Nav, Form, FormControl, Button, Container, NavDropdown} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
+import {useDispatch} from 'react-redux';
+import {useHistory, useLocation} from 'react-router-dom';
+
 
 const NavBar = ({homepage}) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const logout = () =>{
+    dispatch({type: 'LOGOUT'});
+    history.push('/');
+};
   return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
   <Container>
@@ -18,11 +27,18 @@ const NavBar = ({homepage}) => {
       </>
       }
     </Nav>
-    <Nav>
-      <Nav.Link href="#deets">How to use it?</Nav.Link>
-      <Nav.Link href="#deets">About</Nav.Link>
-      <Nav.Link href="#deets">Contact Us</Nav.Link>
-    </Nav>
+    
+      {homepage ? 
+      (<>
+      <Nav>
+        <Nav.Link href="#deets">How to use it?</Nav.Link>
+        <Nav.Link href="#deets">About</Nav.Link>
+        <Nav.Link href="#deets">Contact Us</Nav.Link>
+      </Nav>
+      </> ):(
+      <>
+        <Button onClick = {logout} variant="outline-light">Log Out</Button>
+      </>)}
   </Navbar.Collapse>
   </Container>
 </Navbar>

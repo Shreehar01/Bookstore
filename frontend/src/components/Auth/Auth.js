@@ -24,12 +24,15 @@ const Auth = () => {
         event.preventDefault();
         if(isSignup){
             dispatch(signup(formData, history))
+            console.log("Sign Up Dispatched")
         } else{
             dispatch(signin(formData, history))
+            
         }
     };
     const handleChange = (e) =>{
         setFormData({...formData, [e.target.name]: e.target.value});
+        // console.log(formData);
     };
     const handleShowPassword = () => setshowPassword((prevshowPassword) => !prevshowPassword);
     const switchMode = () => {
