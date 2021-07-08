@@ -1,5 +1,5 @@
 import * as api from '../api';
-import {AUTH} from '../constants/actionTypes';
+import {AUTH, AUTHUPDATE} from '../constants/actionTypes';
 
 // Action creator for signing in.
 export const signin = (formData, history) => async (dispatch) => {
@@ -23,11 +23,15 @@ export const signup = (formData, history) => async (dispatch) => {
     }
 };
 
-export const updateInformation = (personalInformation) => async (dispatch) =>{
+export const updateInformation = (personalInformation) => async (dispatch) => {
     try{
-        const data = await api.updateInformation(personalInformation);
+        console.log("Personal Information from the update information action creator", personalInformation)
+        const {data} = await api.updateInformation(personalInformation);
+        console.log("Data from the updated information ", data);
+        dispatch({type: AUTHUPDATE, data});
         console.log("From the updateInformation from the action creator", data);
     } catch (error){
+        console.log("Error is being printed from the update information.")
         console.log(error);
     }
 }

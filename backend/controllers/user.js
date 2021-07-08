@@ -89,7 +89,7 @@ export const signin = async (req, res) => {
 
 export const signup = async (req, res) => {
   console.log("Sign Up Initiated in the Backend")
-  const { email, password, confirmPassword, firstName, lastName, collegeYear, collegeName} = req.body;
+  const { email, password, confirmPassword, firstName, lastName, collegeYear, collegeName, major} = req.body;
   console.log("Sign Up 1st Line Complete")
   try {
     const oldUser = await User.findOne({ email });
@@ -97,7 +97,7 @@ export const signup = async (req, res) => {
     if (oldUser) return res.status(400).json({ message: "User already exists." });
     if (password !== confirmPassword) return res.status(400).json({ message: "Passwords didn't match." });
     const hashedPassword = await bcrypt.hash(password, 12);
-    const result = await User.create({ email, password: hashedPassword, collegeYear: collegeYear, collegeName: collegeName,  name: `${firstName} ${lastName}` });
+    const result = await User.create({ email, password: hashedPassword, collegeYear: collegeYear, collegeName: collegeName,  name: `${firstName} ${lastName}`, major: major });
     const token = jwt.sign( { email: result.email, id: result._id }, secret, { expiresIn: "1h" } );
     res.status(201).json({ result, token });
     console.log("Sign Up was complete")
@@ -108,12 +108,31 @@ export const signup = async (req, res) => {
 }; 
 
 export const updateInformation = async (req, res) => {
-  const {email} = req.body;
+  console.log("Update information controller for the users was called.")
+  console.log('Request Body from the update information', req.body)
+  const {firstName, lastName, email, password, collegeYear, collegeName} = req.body;
+  // const potentialPassword = password;
   try{
     const userInfo = await User.findOne({email});
-    console.log(userInfo);
-    res.status(200).json({userInfo})
+    const {_id, password} = userInfo;
+    /*
+    if (potentialPassword === ''){
+      console.log('Inside the potential password in the updated information')
+      password = await bcrypt.hash(potentialPassword, 12);
+    }
+    */
+    const name = firstName + " " + lastName;
+    const updatedUser = {email, password, collegeYear, collegeName, name};
+    const id = _id;
+    console.log("Final information to be sent from updated user ", updatedUser);
+    await User.findByIdAndUpdate(id, updatedUser, {new: true});
+    const result = await User.findOne({email});
+    const token = jwt.sign( { email: result.email, id: result._id }, secret, { expiresIn: "1h" } ); 
+    res.status(201).json({ result, token });
+    console.log("Final stepp in the updated information ", result)
+   
   } catch (error){
+    console.log("Error was called");
     res.status(400).json({message: "Couldn't update information!"});
   }
 }

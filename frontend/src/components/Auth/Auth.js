@@ -10,7 +10,7 @@ import {Container, Row, Col, Carousel} from 'react-bootstrap'
 import NavBar from './Navbar.js';
 import Closing from './Closing.js';
 
-const initialState = {firstName: '', lastName: '', email: '', password: '', confirmPassword: '', collegeName: '', collegeYear: ''};
+const initialState = {firstName: '', lastName: '', email: '', password: '', confirmPassword: '', major: '', collegeName: '', collegeYear: ''};
 
 
 const Auth = () => {
@@ -120,7 +120,8 @@ const Auth = () => {
                                         <Input name = "firstName" label = "First Name" handleChange = {handleChange} autoFocus half />
                                         <Input name = "lastName" label = "Last Name" handleChange = {handleChange} half />
                                         <Input name = "collegeYear" label = "Year In College" handleChange = {handleChange} />
-                                        <Input name = "collegeName" label = "College Name" handleChange = {handleChange}/>  
+                                        <Input name = "collegeName" label = "College Name" handleChange = {handleChange}/>
+                                        <Input name = "major" label = "Major" handleChange = {handleChange}/>  
                                 </>
                             ) 
                         }

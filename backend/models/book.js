@@ -6,29 +6,31 @@ import User from './user.js';
 
 //schema for the books
 const bookSchema= new mongoose.Schema({
-  Subject:{
+  subject:{
     type: String,
     required: true,
     trim: true
   },
-  Professor:{
+  professor:{
     type: String,
     required: true,
     trim: true
   },
-   Name:{
+  condition:{
+    type: String,
+    required: true,
+    trim: true
+  },
+  name:{
     type: String
   },
-   Edition:{
-     type: String
-  },
-  AdditionalNotes:{
+  notes:{
     type:String,
     default: 'No Additional Information!!!'
   },
-  ForTaking:{
-    type:Boolean,
-    required: true
+  exam:{
+    type:String,
+    default: 'No Additional Information!!!'
   },
   Owner:{
     type: mongoose.Schema.Types.ObjectId,

@@ -4,28 +4,20 @@ import User from '../models/user.js';
 import sendFirstEmail from '../emails/account.js';
 
 
-
-//reading all the books
-export const getBooks  =  async(req,res)=>{
-    const allbooks= await Book.find({Subject: req.query.Subject})
-    res.status(200).send(allbooks)
+export const createBooks = async (req, res) =>{
+    console.log("Create Books was called")
+    console.log(req.body);
 }
-  
-  //reading user-specific books
- export const getUserBooks = async(req,res)=>{
-    const allbooks= await Book.find({Owner: req.user._id})
-    res.status(200).send(allbooks)
-  }
-  
-  
+/*
+
 //adding a book
-export const createBooks =  async (req,res)=>{
+export const createBook =  async (req,res)=>{
     const book= new Book({
         ...req.body,
         Owner: req.user._id
     })
-    const gamechangers= await User.findOne({_id:book.Owner})
-    const gamechanger= gamechangers.Email
+    // const gamechangers= await User.findOne({_id:book.Owner})
+    // const gamechanger= gamechangers.Email
     if(book.ForTaking){
         await book.save()
         const allBooks=await Book.find({ForTaking:false, Subject:book.Subject})
@@ -45,6 +37,20 @@ export const createBooks =  async (req,res)=>{
       res.status(201).send(book)
     }
   }
+  
+
+//reading all the books
+export const getBooks  =  async(req,res)=>{
+    const allbooks= await Book.find({Subject: req.query.Subject})
+    res.status(200).send(allbooks)
+}
+  
+  //reading user-specific books
+ export const getUserBooks = async(req,res)=>{
+    const allbooks= await Book.find({Owner: req.user._id})
+    res.status(200).send(allbooks)
+  }
+  
   
   
   
@@ -88,4 +94,4 @@ export const updateBooks = async (req, res) => {
           res.status(400).send(e)
       }
   }
-  
+*/

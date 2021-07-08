@@ -4,8 +4,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
- import userRoutes from './routes/user.js';
-// import bookRoutes from './routes/book.js';
+import userRoutes from './routes/user.js';
+import bookRoutes from './routes/book.js';
 
 /*
 import heartRoutes from './routes/hearts.js';
@@ -33,7 +33,7 @@ app.use('/loanposts', loanRoutes);
 app.use('/insuranceposts', insuranceRoutes);
 */
 
-// app.use('/books', bookRoutes);
+app.use('/book', bookRoutes);
 app.use('/user', userRoutes);
 
 app.get('/', (req, res) => {
