@@ -1,17 +1,28 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, createRef} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {Form, Button, Row, Col} from 'react-bootstrap';
-import {createBook} from '../actions/book';
-
-const Manualform = ({myrequests}) => {
+import {createBook, updateBook} from '../actions/book';
+import { createRequest, updateRequest } from '../actions/request';
+const Manualform = ({myrequests, currentId, setCurrentId}) => {
   const ownerInformation = JSON.parse(localStorage.getItem('profile'));
   const ownerId = ownerInformation.result._id;
   console.log("Owner Information from the redux state in the manual form", ownerId)
   const [bookInfo, setBookInfo] = useState({name: '', author: '', condition: '', subject: '', professor: '', notes: '', exam: ''});
-
-
+  const info = window.location.href.split("/");
+  const currentPage =  info[info.length - 1]; 
+  //if (currentPage === "mybooks"){
+    const book = useSelector((state) => currentId ? state.mybooks.find((p) => p._id == currentId) : null);
+  //}  
+  /*
+  if (currentPage === "myrequests"){
+    const book = useSelector((state) => currentId ? state.myrequests.find((p) => p._id == currentId) : null);
+  }
+  */
   const dispatch = useDispatch();
-
+  
+  useEffect(() => {
+      if(book) setBookInfo(book);
+  }, [book]);
 
   const handleChange = (e) => {
     // console.log("From the handle change in infoform ", e.target)
@@ -21,12 +32,37 @@ const Manualform = ({myrequests}) => {
     
   };
 
+  const clearInfo = () =>{
+    setBookInfo({name: '', author: '', condition: '', subject: '', professor: '', notes: '', exam: ''});
+  }
+
   const handleSubmit = (event) =>{
-    // console.log("On Handle Submit called from the Info Form");
-    event.preventDefault();
-    const bookInformation = bookInfo;
-    bookInformation.Owner = ownerId;
-    dispatch(createBook(bookInformation))
+    if (currentId == 0){
+      // console.log("On Handle Submit called from the Info Form");
+      event.preventDefault();
+      if (currentPage === "mybooks"){
+        const bookInformation = bookInfo;
+        bookInformation.Owner = ownerId;
+        dispatch(createBook(bookInformation));
+      }
+      else if (currentPage === 'myrequests'){
+        const requestInformation = bookInfo;
+        delete requestInformation["condition"];
+        delete requestInformation["notes"];
+        delete requestInformation["exam"];
+        requestInformation.Owner = ownerId;
+        dispatch(createRequest(requestInformation));
+      }
+      
+    }else{
+      if (currentPage === "mybooks"){
+        dispatch(updateBook(currentId, bookInfo));
+      } else if (currentPage === "myrequests"){
+        dispatch(updateRequest(currentId, bookInfo));
+      }
+    }
+    setCurrentId(0);
+    clearInfo();
     // console.log("On Handle Submit called from the Info Form Second Step"); 
     // dispatch(updateInformation(personalInformation));
     // console.log("On Handle Submit called from the Manual Form", bookInfo); 

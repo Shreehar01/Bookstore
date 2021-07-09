@@ -18,6 +18,12 @@ export const updateInformation = (personalInformation) => API.patch('/user/updat
 
 // Books
 export const createBook = (bookInformation) => API.post('/book/createbook', bookInformation);
-export const fetchHeartPosts = (pageNumber) => API.get(`/heartposts?page=${pageNumber}`);
-export const updateHeartPost = (id, updatedHeartPost) => API.patch(`/heartposts/${id}`, updatedHeartPost);
-export const deleteHeartPost = (id) => API.delete(`/heartposts/${id}`);
+export const getBooks = () => API.get(`/book/getbooks`);
+export const getAllBooks = (search) => API.get(`/book/getallbooks`, search);
+export const updateBook = (id, bookInfo) => API.post(`/book/updatebook/${id}`, bookInfo);
+export const deleteBook = (id) => API.delete(`/book/deletebook/${id}`);
+
+export const createRequest = (requestInformation) => API.post('/request/createrequest', requestInformation);
+export const getRequests = () => API.get(`/request/getrequests`);
+export const updateRequest = (id, requestInfo) => API.post(`/request/updaterequest/${id}`, requestInfo);
+export const deleteRequest = (id) => API.delete(`/request/deleterequest/${id}`);

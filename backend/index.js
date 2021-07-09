@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 
 import userRoutes from './routes/user.js';
 import bookRoutes from './routes/book.js';
+import requestRoutes from './routes/request.js';
 
 /*
 import heartRoutes from './routes/hearts.js';
@@ -35,6 +36,7 @@ app.use('/insuranceposts', insuranceRoutes);
 
 app.use('/book', bookRoutes);
 app.use('/user', userRoutes);
+app.use('/request', requestRoutes);
 
 app.get('/', (req, res) => {
     res.send('Welcome to Bookstore');

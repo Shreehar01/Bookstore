@@ -7,8 +7,65 @@ import sendFirstEmail from '../emails/account.js';
 export const createBooks = async (req, res) =>{
     console.log("Create Books was called")
     console.log(req.body);
+    const book = req.body;
+    const newBook = new Book({...book});
+    console.log("New Book", newBook);
+    console.log("Step called");
+    try{
+        await newBook.save();
+        console.log("Step2 called");
+        console.log("New Book was saved");
+        res.status(201).json(newBook);
+    }
+    catch (error) {
+        console.log("Error was called from the createBooks")
+        console.log(error.message);
+        res.status(409).json({message: error.message});
+    }
+}
+
+export const getBooks = async (req, res) =>{
+    try{
+        console.log("Seeing the request useId from getBooks", req.userId)
+        const mybooks = await Book.find({Owner: req.userId});
+        console.log('Seeing the mybooks from getBooks', mybooks);
+        res.status(200).json({mybooks});
+    } catch (error){
+        res.status(404).json({message: error.message})
+    }
+}
+
+export const getAllBooks = async (req, res) =>{
+    try{
+       // console.log("Printing req.params", req.params)
+       console.log("Printing the request body", req.body) 
+       const mybooks = await Book.find({subject: req.params.search});
+        console.log('Seeing all the books with the search name', mybooks);
+        res.status(200).json({mybooks});
+    } catch (error){
+        res.status(404).json({message: error.message})
+    }
+}
+
+export const updateBook = async (req, res) => {
+    const {id} = req.params;
+    const {name, author, condition, subject, professor, notes, exam} = req.body;
+    const Owner = req.userId;
+    if(!mongoose.Types.ObjectId.isValid(id)) res.status(404).send('No book with that id');
+    const updatedBook = {name, author, condition, subject, professor, notes, exam, Owner, _id: id} 
+    await Book.findByIdAndUpdate(id, updatedBook, {new: true});
+    const update = await Book.find({_id: id});
+    res.status(200).json(updatedBook);
+}
+export const deleteBook = async (req, res) => {
+    const {id}  = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) res.status(404).send('No post with that id');
+    await Book.findByIdAndRemove(id);
+    res.json({message: 'Post deleted successfully'});
 }
 /*
+
+
 
 //adding a book
 export const createBook =  async (req,res)=>{

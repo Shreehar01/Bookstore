@@ -1,5 +1,5 @@
 import express from 'express';
-import {createBooks} from '../controllers/book.js';
+import {createBooks, getBooks, updateBook, deleteBook, getAllBooks} from '../controllers/book.js';
 import auth from '../middleware/auth.js';
 
 const router = express.Router()
@@ -11,9 +11,10 @@ const router = express.Router()
 // router.patch('/book/:id', auth, updateBooks);
 // router.delete('/books/:id', auth, deleteBooks);
 
-router.post('/createbook', createBooks);
-// router.post('/editbooks', editbooks);
-// router.get('/getbooks', getBooks);
-// router.delete('/deletebooks', deleteBooks);
+router.post('/createbook', auth, createBooks);
+router.post('/updatebook/:id', auth, updateBook);
+router.get('/getbooks', auth, getBooks);
+router.get('/getallbooks', auth, getAllBooks);
+router.delete('/deletebook/:id', deleteBook);
 
 export default router;

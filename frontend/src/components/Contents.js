@@ -1,5 +1,10 @@
-import React from 'react'
+import React , {useEffect} from 'react'
 import { Container, Row, Col, Card, ListGroup, Button } from 'react-bootstrap'
+
+import {useSelector, useDispatch} from 'react-redux';
+
+import {getBooks, deleteBook} from '../actions/book';
+import { getRequests, deleteRequest } from '../actions/request';
 
 import { IoIosSend } from 'react-icons/io';
 import {FiEdit} from 'react-icons/fi';
@@ -38,25 +43,29 @@ table: {
 },
 });
 
-function createData(name, calories, fat, carbs, protein, caloriess, fats, carbss, proteins) {
-  return { name, calories, fat, carbs, protein, caloriess, fats, carbss, proteins };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 159, 6.0, 24, 4.0),
-  createData('Eclair', 262, 16.0, 24, 6.0, 159, 6.0, 24, 4.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 159, 6.0, 24, 4.0),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 159, 6.0, 24, 4.0),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 159, 6.0, 24, 4.0),
-];
-
+const rows = []
 
 
 
 const Contents = ({mybooks, myrequests, setCurrentId}) => {
     const classes = useStyles();
-
+    const dispatch = useDispatch();
+    const books = useSelector((state) => state.mybooks);
+    console.log("The current location ", window.location.href)
+    console.log("Seeing rows from the content", typeof(rows))
+    console.log("Seeing books from the content", (books))
+    const info = window.location.href.split("/");
+    const currentPage =  info[info.length - 1];
+    useEffect (()=>{
+      if (currentPage === "mybooks") {
+        dispatch(getBooks());
+      }else if (currentPage === "myrequests"){
+        dispatch(getRequests());
+      }else{
+        // Implement the getSearchEntries()
+      }
+      
+    }, [dispatch])
     return (
         <div>
 
@@ -81,10 +90,12 @@ const Contents = ({mybooks, myrequests, setCurrentId}) => {
         <TableHead>
           <TableRow>
           <StyledTableCell>Book Name and Edition</StyledTableCell>
+          <StyledTableCell >Author's Name</StyledTableCell>
+            
             {!myrequests && <StyledTableCell align = "right">Condition</StyledTableCell>}
             <StyledTableCell align="right">Subject</StyledTableCell>
             <StyledTableCell align="right">Professor</StyledTableCell>
-            {!mybooks && <StyledTableCell align="right">College Name</StyledTableCell>}
+            {!mybooks && !myrequests && <StyledTableCell align="right">College Name</StyledTableCell>}
             {!myrequests && <StyledTableCell align="right">Notes</StyledTableCell>}
             {!myrequests && <StyledTableCell align="right">Exam Materials</StyledTableCell>}
             {!mybooks &&
@@ -96,22 +107,27 @@ const Contents = ({mybooks, myrequests, setCurrentId}) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {!books ? <>Loading </> : books?.map((book) => (
+            <StyledTableRow key={book.name}>
               <StyledTableCell component="th" scope="row">
-                {row.name}
+                {book.name}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              {!myrequests && <StyledTableCell align="right">{row.fat}</StyledTableCell>}
-              {!myrequests && <StyledTableCell align="right">{row.carbs}</StyledTableCell>}
-              {!myrequests && <StyledTableCell align="right">{row.protein}</StyledTableCell>}
-              {!mybooks && <StyledTableCell align="right">{row.caloriess}</StyledTableCell>}
-              {!mybooks && <StyledTableCell align="right">{row.fats}</StyledTableCell>}
-              <StyledTableCell align="right">{row.carbss}</StyledTableCell>
+              <StyledTableCell component="th" scope="row">
+                {book.author}
+              </StyledTableCell>
+              {!myrequests &&< StyledTableCell align="right">{book.condition}</StyledTableCell>}
+              <StyledTableCell align="right">{book.subject}</StyledTableCell>
+              <StyledTableCell align="right">{book.professor}</StyledTableCell>
+              {!myrequests && <StyledTableCell align="right">{book.notes}</StyledTableCell>}
+              {!mybooks && <StyledTableCell align="right">{book.caloriess}</StyledTableCell>}
+              {!mybooks && <StyledTableCell align="right">{book.fats}</StyledTableCell>}
+              {!myrequests && < StyledTableCell align="right">{book.exam}</StyledTableCell>}
               {!mybooks && <StyledTableCell align="right"><Button variant="outline-primary"><IoIosSend /></Button> </StyledTableCell>}
-              {mybooks && <StyledTableCell align="right"><Button variant="outline-primary"><FiEdit /> </Button> {}<Button variant="outline-danger"><RiDeleteBin5Line /> </Button></StyledTableCell>}
+              {mybooks && <StyledTableCell align="right"><Button onClick = {()=> setCurrentId(book._id)} variant="outline-primary"><FiEdit /> </Button> {}
+              <Button onClick = {() => {currentPage === "mybooks" ? dispatch(deleteBook(book._id)): dispatch(deleteRequest(book._id)) }} variant="outline-danger"><RiDeleteBin5Line /> </Button></StyledTableCell>}
             </StyledTableRow>
           ))}
+
         </TableBody>
       </Table>
       
@@ -141,3 +157,6 @@ const Contents = ({mybooks, myrequests, setCurrentId}) => {
 }
 
 export default Contents
+
+/*
+*/

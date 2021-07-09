@@ -17,7 +17,7 @@ const Auth = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [showPassword, setshowPassword] = useState(false);
-    const [isSignup, setisSignup] = useState(true);
+    const [isSignup, setisSignup] = useState(false);
     const [formData, setFormData] = useState(initialState);
     const history = useHistory();
     const handleSubmit = (event) =>{
