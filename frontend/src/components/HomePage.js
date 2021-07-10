@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import NavBar from './Auth/Navbar.js';
 import Closing from './Auth/Closing.js';
 import { Row, Container, Form } from 'react-bootstrap';
@@ -32,19 +32,26 @@ const HomePage = () => {
     //console.log("Printing the search stat")
     setSearch(e.target.value)
     console.log("Search state from the homepage", search)
+    
+    // 
+  }
+  
+  const handleSubmit = (event) =>{
+    event.preventDefault();
     dispatch(getAllBooks(search));
   }
-
     return (
         <div>
             <NavBar homepage = {false}/>
             < br />
             <Container fluid="md">
   <Row>
+    <form onSubmit = {handleSubmit}>
   <Form.Group>
-  <Form.Control onChange = {searchChange} value = {state.search} size="lg" type="text" placeholder="Search for the books by their subject's name." />
+  <Form.Control onChange = {searchChange} value = {search} size="lg" type="text" placeholder="Search for the books by their subject's name." />
   
 </Form.Group>
+</form>
   </Row>
   <Row>
   <FormControlLabel

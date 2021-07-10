@@ -7,6 +7,7 @@ export default (mybooks = [], action) =>{
         case GETBOOK:
             return action.payload;
         case GETALLBOOK:
+            console.log("From the reducer section. Get all book reducer was called.")
             return action.payload;
         case CREATEBOOK:
             return [... mybooks, action.payload];  

@@ -19,7 +19,7 @@ export const updateInformation = (personalInformation) => API.patch('/user/updat
 // Books
 export const createBook = (bookInformation) => API.post('/book/createbook', bookInformation);
 export const getBooks = () => API.get(`/book/getbooks`);
-export const getAllBooks = (search) => API.get(`/book/getallbooks`, search);
+export const getAllBooks = (search) => API.post(`/book/getallbooks/${search}`);
 export const updateBook = (id, bookInfo) => API.post(`/book/updatebook/${id}`, bookInfo);
 export const deleteBook = (id) => API.delete(`/book/deletebook/${id}`);
 

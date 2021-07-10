@@ -118,10 +118,11 @@ const Contents = ({mybooks, myrequests, setCurrentId}) => {
               {!myrequests &&< StyledTableCell align="right">{book.condition}</StyledTableCell>}
               <StyledTableCell align="right">{book.subject}</StyledTableCell>
               <StyledTableCell align="right">{book.professor}</StyledTableCell>
+              {!myrequests && !mybooks && <StyledTableCell align="right">{book.college}</StyledTableCell>}
+              
               {!myrequests && <StyledTableCell align="right">{book.notes}</StyledTableCell>}
-              {!mybooks && <StyledTableCell align="right">{book.caloriess}</StyledTableCell>}
-              {!mybooks && <StyledTableCell align="right">{book.fats}</StyledTableCell>}
               {!myrequests && < StyledTableCell align="right">{book.exam}</StyledTableCell>}
+              {!myrequests && !mybooks && < StyledTableCell align="right">{book.provider}</StyledTableCell>}
               {!mybooks && <StyledTableCell align="right"><Button variant="outline-primary"><IoIosSend /></Button> </StyledTableCell>}
               {mybooks && <StyledTableCell align="right"><Button onClick = {()=> setCurrentId(book._id)} variant="outline-primary"><FiEdit /> </Button> {}
               <Button onClick = {() => {currentPage === "mybooks" ? dispatch(deleteBook(book._id)): dispatch(deleteRequest(book._id)) }} variant="outline-danger"><RiDeleteBin5Line /> </Button></StyledTableCell>}

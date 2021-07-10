@@ -23,9 +23,9 @@ export const getBooks = () => async(dispatch) => {
 
 export const getAllBooks = (search) => async(dispatch) => {
     try{
-        console.log("Get Book Reducer is being called")
+        console.log("Get All Book Action Creator is being called in the all book action.")
         const {data} = await API.getAllBooks(search);
-        console.log("Printing the data from mybooks in the getBooks action creator", data)
+        console.log("Printing the data from mybooks in the get all Books action creator", data)
         dispatch({type: GETALLBOOK, payload: data.mybooks});
     } catch (error){
         console.log(error.message);

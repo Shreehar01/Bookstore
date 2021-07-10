@@ -37,12 +37,40 @@ export const getBooks = async (req, res) =>{
 
 export const getAllBooks = async (req, res) =>{
     try{
-       // console.log("Printing req.params", req.params)
-       console.log("Printing the request body", req.body) 
-       const mybooks = await Book.find({subject: req.params.search});
-        console.log('Seeing all the books with the search name', mybooks);
+        const {search} = req.params;
+        // console.log("Printing req.params", req.params)
+        // console.log("Printing the request params in the get all books", search) 
+        let books = await Book.find({subject: req.params.search});
+        // console.log("Type of the books", typeof(books))
+        // console.log('Seeing all the books with the search name in the all books controller', books);
+        const someFunction = () => {
+            const promises = books.map(async (book) => {
+                let ownerInfos = await User.find({_id: book.Owner})      
+                return ownerInfos;
+                
+            });
+            return Promise.all(promises);
+        }
+        let owners = await someFunction();        
+        // console.log("Printing the value of k", owners)
+        let ownerInfo = []
+        owners.map((owner)=>{
+            ownerInfo.push(owner[0])
+        })
+        // console.log("OwnerInfo", ownerInfo)
+        let idx = 0;
+        let mybooks = []
+        books.forEach((book)=>{
+            const {notes, exam, _id, name, author, condition, subject, professor, Owner} = book;
+            mybooks.push({notes, exam, _id, name, author, condition, subject, professor, Owner, email: ownerInfo[idx].email, provider: ownerInfo[idx].name, college:ownerInfo[idx].collegeName });
+            idx++;
+        })
         res.status(200).json({mybooks});
+    
     } catch (error){
+        console.log("Error is being printed")
+        console.log("Printing the error", error)
+
         res.status(404).json({message: error.message})
     }
 }
