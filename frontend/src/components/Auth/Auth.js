@@ -10,7 +10,7 @@ import {Container, Row, Col, Carousel} from 'react-bootstrap'
 import NavBar from './Navbar.js';
 import Closing from './Closing.js';
 
-const initialState = {firstName: '', lastName: '', email: '', password: '', confirmPassword: '', major: '', collegeName: '', collegeYear: ''};
+const initialState = {firstName: '', lastName: '', email: '', password: '', confirmPassword: '', major: '', collegeName: '', collegeYear: '', latitude: '', longitude: ''};
 
 
 const Auth = () => {
@@ -22,6 +22,11 @@ const Auth = () => {
     const history = useHistory();
     const handleSubmit = (event) =>{
         event.preventDefault();
+        navigator.geolocation.getCurrentPosition(function(position) {
+          console.log("Latitude is :", position.coords.latitude);
+          console.log("Longitude is :", position.coords.longitude);
+          setFormData({...formData, latitude:position.coords.latitude, longitude: position.coords.longitude })
+        });
         if(isSignup){
             dispatch(signup(formData, history))
             console.log("Sign Up Dispatched")

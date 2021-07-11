@@ -66,8 +66,13 @@ export const userLogout = async(req, res)=>{
 */
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+// import sendFirstEmail from "../emails/account.js";
 import User from "../models/user.js";
 const secret = 'bookstoreapplication';
+import SendGrid from '@sendgrid/mail'
+
+import dotenv from 'dotenv';
+
 
 export const signin = async (req, res) => {
   console.log("Sing in Inititated")
@@ -89,7 +94,7 @@ export const signin = async (req, res) => {
 
 export const signup = async (req, res) => {
   console.log("Sign Up Initiated in the Backend")
-  const { email, password, confirmPassword, firstName, lastName, collegeYear, collegeName, major} = req.body;
+  const { email, password, confirmPassword, firstName, lastName, collegeYear, collegeName, major, latitude, longitude} = req.body;
   console.log("Sign Up 1st Line Complete")
   try {
     const oldUser = await User.findOne({ email });
@@ -97,7 +102,7 @@ export const signup = async (req, res) => {
     if (oldUser) return res.status(400).json({ message: "User already exists." });
     if (password !== confirmPassword) return res.status(400).json({ message: "Passwords didn't match." });
     const hashedPassword = await bcrypt.hash(password, 12);
-    const result = await User.create({ email, password: hashedPassword, collegeYear: collegeYear, collegeName: collegeName,  name: `${firstName} ${lastName}`, major: major });
+    const result = await User.create({ email, password: hashedPassword, collegeYear: collegeYear, collegeName: collegeName,  name: `${firstName} ${lastName}`, major: major, latitude: latitude, longitude: longitude });
     const token = jwt.sign( { email: result.email, id: result._id }, secret, { expiresIn: "1h" } );
     res.status(201).json({ result, token });
     console.log("Sign Up was complete")
@@ -136,3 +141,39 @@ export const updateInformation = async (req, res) => {
     res.status(400).json({message: "Couldn't update information!"});
   }
 }
+
+export const sendMail = async (req, res) =>{
+  SendGrid.setApiKey(process.env.SENDGRID_KEY)
+  console.log("Request body from the sendMail", req.body)
+  const {bookId, receiverName, bookName, authorName, senderName, senderCollege, senderEmail} = req.body;
+  /*
+  const msg = {
+    to: "sjoshi4@ramapo.edu",
+      from: "joshishreehar@gmail.com",
+      subject: "BookStore Request",
+      text:  
+      `Dear ${receiverName},
+I found your email from the Bookstore application online. I was really interested in the book ${bookName} written by ${authorName}.
+Can you please give me your book if you don't need it? My email address is ${senderEmail}.
+
+Sincerely,
+${senderName} 
+${senderCollege}` 
+
+  };
+  await SendGrid.send(msg);
+*/
+  
+  
+  res.status(201).json({bookId})
+}
+
+/*
+`Dear ${receiverName},
+      I found your email from the Bookstore application online. I was really interested in the book ${bookName} written by ${authorName}.
+      Can you please give me your book if you don't need it? My email address is ${senderEmail}.
+      Sincerely,
+      ${senderName} 
+      ${senderCollege}` 
+  
+*/

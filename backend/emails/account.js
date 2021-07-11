@@ -1,11 +1,14 @@
 // const sgMail = require('@sendgrid/mail');
-import sgMail from '@sendgrid/mail';
+import sgMail from '@sendgrid/mail'
+
 import User from '../models/user.js';
 
 sgMail.setApiKey('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')
 
 const sendFirstEmail = async (sender, receiver,subject, professor) => {
-    await sgMail.send({
+    
+    try{
+        await sgMail.send({
          to: receiver,
          from: 'joshishreehar@gmail.com',
          subject: 'We have found your book',
@@ -14,6 +17,9 @@ const sendFirstEmail = async (sender, receiver,subject, professor) => {
          The email address is ${sender.Email}.
          Contact ${sender.Name} ASAP before the book runs out.`
      })
+    } catch (error){
+        console.log("Error is being produced in the sedngrdi")
+    }
 }
 const sendSecondEmail = async (sender, receiver, subject, professor) => {
     await sgMail.send({

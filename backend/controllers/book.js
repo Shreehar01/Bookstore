@@ -62,7 +62,7 @@ export const getAllBooks = async (req, res) =>{
         let mybooks = []
         books.forEach((book)=>{
             const {notes, exam, _id, name, author, condition, subject, professor, Owner} = book;
-            mybooks.push({notes, exam, _id, name, author, condition, subject, professor, Owner, email: ownerInfo[idx].email, provider: ownerInfo[idx].name, college:ownerInfo[idx].collegeName });
+            mybooks.push({notes, exam, _id, name, author, condition, subject, professor, Owner, email: ownerInfo[idx].email, provider: ownerInfo[idx].name, college:ownerInfo[idx].collegeName, latitude: ownerInfo[idx].latitude, longitude: ownerInfo[idx].longitude });
             idx++;
         })
         res.status(200).json({mybooks});

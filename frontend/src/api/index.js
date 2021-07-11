@@ -27,3 +27,5 @@ export const createRequest = (requestInformation) => API.post('/request/createre
 export const getRequests = () => API.get(`/request/getrequests`);
 export const updateRequest = (id, requestInfo) => API.post(`/request/updaterequest/${id}`, requestInfo);
 export const deleteRequest = (id) => API.delete(`/request/deleterequest/${id}`);
+
+export const sendMail = (mailInformation) => API.post('/user/sendmail', mailInformation);
