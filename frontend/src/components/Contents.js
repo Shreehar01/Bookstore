@@ -23,6 +23,8 @@ import TablePagination from '@material-ui/core/TablePagination';
 
 import {Modal} from 'react-bootstrap';
 
+import SearchMaps from './SearchMaps.js';
+
 // Modal
 function MyVerticallyCenteredModal(props) {
   console.log("Props", props)
@@ -85,7 +87,7 @@ const rows = []
 
 
 
-const Contents = ({mybooks, myrequests, setCurrentId}) => {
+const Contents = ({mybooks, myrequests, setCurrentId, checkedStatus}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [modalShow, setModalShow] = React.useState(false);
@@ -95,6 +97,7 @@ const Contents = ({mybooks, myrequests, setCurrentId}) => {
     const books = useSelector((state) => state.mybooks);
     const sentId = useSelector((state)=> state.mailsent);
     console.log("Sent Id from the contents", sentId)
+    console.log('Checked Status', checkedStatus)
     //console.log("The current location ", window.location.href)
     //console.log("Seeing rows from the content", typeof(rows))
     //console.log("Seeing books from the content", (books))
@@ -137,6 +140,9 @@ const Contents = ({mybooks, myrequests, setCurrentId}) => {
         stateValue = {stateValue}
         setStateValue = {setStateValue}
       />
+
+{!checkedStatus ? 
+<>
 
 <Container>
   <Row>
@@ -217,6 +223,10 @@ const Contents = ({mybooks, myrequests, setCurrentId}) => {
 </Container>
 
 
+</> :
+<SearchMaps books = {books} />
+
+}
         </div>
     )
 }

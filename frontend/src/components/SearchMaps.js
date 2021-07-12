@@ -8,7 +8,6 @@ import {Container, Row, Col} from 'react-bootstrap';
 import './index.css';
 
 // define constants
-const NATURAL_EVENT_WILDFIRE = 5;
 const eventData = [
     {lat: 31.3,lng:31.3, info:'Book1', email: 'joshishreehar@gmail.com'},
     {lat: 32.3,lng:31.3, info:'Book2', email: 'kalopool81@gmail.com'},
@@ -17,22 +16,27 @@ const eventData = [
     {lat: 35.3,lng:31.3, info:'Book5', email: 'elonmusk@gmail.com'},    
 ]
 
-const SearchMaps = ({ center, zoom }) => {
+const SearchMaps = ({books}) => {
     const [locationInfo, setLocationInfo] = useState(null)
+    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState('');
     const [emails, setEmails] = useState([]);
-    const markers = eventData.map((ev, index) => {
-        return <LocationMarker key={index} lat={ev.lat} lng={ev.lng} onClick={() => setLocationInfo({ title: ev.info, email: ev.email })} />
+    const markers = books.map((book, index) => {
+        return <LocationMarker key={index} lat={book.latitude} lng={book.longitude} onClick={() => setLocationInfo({ title: book?.info, email: book?.email })} />
     })
-    
+    navigator.geolocation.getCurrentPosition(function(position) {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+    });
     return (
         <Container>
   <Row>
-    <Col sm={9}>
+    <Col sm={8}>
     <div className="map">
             <GoogleMapReact
                 bootstrapURLKeys={{ key: "AIzaSyC4Z5Qz97EWcoCczNn2IcYvaYG0L9pe6Rk" }}
-                defaultCenter={ {lat: 31.3,lng:31.3,} }
-                defaultZoom={6}
+                defaultCenter={ {lat: latitude,lng:longitude,} }
+                defaultZoom={13}
             >
                 {markers}
             </GoogleMapReact>
@@ -42,9 +46,9 @@ const SearchMaps = ({ center, zoom }) => {
 
 
     </Col>
-    <Col sm={3}>
-    {locationInfo && <LocationInfoBox info={locationInfo} emails = {emails} setEmails = {setEmails} />}
-    {locationInfo && <EmailInfoBox emails = {emails} setEmails = {setEmails}/>}
+    <Col sm={4}>
+    {<LocationInfoBox info={locationInfo} emails = {emails} setEmails = {setEmails} />}
+    {<EmailInfoBox emails = {emails} setEmails = {setEmails}/>}
     
     </Col>
     
@@ -54,12 +58,6 @@ const SearchMaps = ({ center, zoom }) => {
     )
 }
 
-Map.defaultProps = {
-    center: {
-        lat: 42.3265,
-        lng: -122.8756
-    },
-    zoom: 6
-}
+
 
 export default SearchMaps

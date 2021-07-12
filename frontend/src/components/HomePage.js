@@ -74,7 +74,7 @@ const HomePage = () => {
             
             
             < br/>
-            {!state.checkedB ? <Contents mybooks = {false} /> : <SearchMaps />}
+            <Contents mybooks = {false} checkedStatus = {state.checkedB} /> 
             
             <Closing />
         </div>
