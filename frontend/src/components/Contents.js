@@ -1,4 +1,4 @@
-import React , {useEffect} from 'react'
+import React , {useEffect, useState} from 'react'
 import { Container, Row, Col, Card, ListGroup, Button } from 'react-bootstrap'
 
 import {useSelector, useDispatch} from 'react-redux';
@@ -104,6 +104,18 @@ const Contents = ({mybooks, myrequests, setCurrentId, checkedStatus}) => {
     const info = window.location.href.split("/");
     const currentPage =  info[info.length - 1];
     
+
+    const [latitude, setLatitude] = useState('');
+    const [longitude, setLongitude] = useState('');
+    navigator.geolocation.getCurrentPosition(function(position) {
+      setLatitude(position.coords.latitude);
+      setLongitude(position.coords.longitude);
+    });
+
+
+
+
+
     const listofIds = sentId.map((sendId)=>{
       return sendId.bookId
     })   
@@ -127,9 +139,11 @@ const Contents = ({mybooks, myrequests, setCurrentId, checkedStatus}) => {
       dispatch(sendMail(mailInformation));
       setModalShow(false);
     }
+
+  
         
     return (
-        <div>
+        <div> 
 
 <MyVerticallyCenteredModal
         show={modalShow}
@@ -224,7 +238,7 @@ const Contents = ({mybooks, myrequests, setCurrentId, checkedStatus}) => {
 
 
 </> :
-<SearchMaps books = {books} />
+<SearchMaps books = {books} latitude = {latitude} longitude = {longitude} />
 
 }
         </div>

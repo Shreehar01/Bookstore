@@ -29,3 +29,4 @@ export const updateRequest = (id, requestInfo) => API.post(`/request/updatereque
 export const deleteRequest = (id) => API.delete(`/request/deleterequest/${id}`);
 
 export const sendMail = (mailInformation) => API.post('/user/sendmail', mailInformation);
+export const sendMultipleMails = (selectedBook) => API.post('/user/sendmultiplemails', selectedBook);

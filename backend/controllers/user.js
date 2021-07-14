@@ -168,12 +168,46 @@ ${senderCollege}`
   res.status(201).json({bookId})
 }
 
-/*
-`Dear ${receiverName},
-      I found your email from the Bookstore application online. I was really interested in the book ${bookName} written by ${authorName}.
-      Can you please give me your book if you don't need it? My email address is ${senderEmail}.
-      Sincerely,
-      ${senderName} 
-      ${senderCollege}` 
+
+
+export const sendMultipleMails = async (req, res) =>{
+  SendGrid.setApiKey(process.env.SENDGRID_KEY)
+  console.log("Request body from the sendMultipleMail", req.body)
+  // const {bookId, receiverName, bookName, authorName, senderName, senderCollege, senderEmail} = req.body;
+  // console.log("Printign the user ID", req.userId)
+  const userInfo = await User.findOne({_id: req.userId});
+  console.log("Printing the userInfo", userInfo)
+  const senderName = userInfo.name;
+  const senderCollege = userInfo.collegeName;
+  const senderEmail = userInfo.email;
+  let listofIds = [];
+  const selectedBooks = req.body;
+  selectedBooks.map( async (book) =>{
+    console.log("Individual books inside the map function", book)
+    let bookId = book._id;
+    let receiverName = book.provider;
+    let bookName = book.name;
+    let authorName = book.author;
+    let receiverEmail = book.email;
+    let msg = {
+      to: "sjoshi4@ramapo.edu",
+        from: "joshishreehar@gmail.com",
+        subject: "BookStore Request",
+        text:  
+        `Dear ${receiverName},
+  I found your email from the Bookstore application online. I was really interested in the book ${bookName} written by ${authorName}.
+  Can you please give me your book if you don't need it? My email address is ${senderEmail}.
   
-*/
+  Sincerely,
+  ${senderName} 
+  ${senderCollege}`   
+  
+    };
+    // await SendGrid.send(msg);
+    await listofIds.push(bookId)
+  })
+  console.log("Printing the list of Ids in the send multiple mails", listofIds)
+  res.status(201).json({listofIds})
+}
+
+

@@ -1,17 +1,37 @@
 import React from 'react'
 import { Card, Button } from 'react-bootstrap'
+import {sendMultipleMails} from '../actions/mail';
+import { useDispatch } from 'react-redux';
 import './styles.css'
 // setEmails(arrayRemove(emails, email));
-const EmailInfoBox = ({emails, setEmails}) => {
-    console.log("Emails from the tag", emails);
-    const handleDelete = (email) => {
+const EmailInfoBox = ({selectedBook, setSelectedBook}) => {
+  const dispatch = useDispatch();  
+  
+  console.log("Printing the seelcted book from the Email Info Box", selectedBook);  
+  
+    // const handleDeleteEmails = (email) => {
+    //     function arrayRemove(arr, value) { 
+    //         return arr.filter(function(ele){ 
+    //             return ele != value; 
+    //         });
+    //     }
+    //     setEmails(arrayRemove(emails, email))
+    // };
+  
+    const handleSubmit = () =>{
+      dispatch(sendMultipleMails(selectedBook))
+      setSelectedBook([]);
+    }
+    
+   const handleDeleteBooks = (book) =>{
         function arrayRemove(arr, value) { 
             return arr.filter(function(ele){ 
                 return ele != value; 
             });
         }
-        setEmails(arrayRemove(emails, email))
-    };
+        setSelectedBook(arrayRemove(selectedBook, book))
+   }  
+
     return (
         <div>
         <Card
@@ -22,16 +42,16 @@ const EmailInfoBox = ({emails, setEmails}) => {
       >
         <Card.Header>Emails</Card.Header>
         <Card.Body>
-          <Card.Title> List of Emails </Card.Title>
+          {!selectedBook.length && <Card.Text> Add the emails to send multiple book requests at once. </Card.Text>}
           <Card.Text>
           <div>
-            {emails.map(email => ( 
-          <div className="tag-item" key={email}>
-            {email}
+            {selectedBook.map(book => ( 
+          <div className="tag-item" key={book._id}>
+            {book.email}
             <button
               type="button"
               className="button"
-              onClick={() => {handleDelete(email)}}
+              onClick={() => {handleDeleteBooks(book)}}
             >
               &times;
             </button>
@@ -43,9 +63,8 @@ const EmailInfoBox = ({emails, setEmails}) => {
 
 
           </Card.Text>
-          {emails.length != 0 &&  <Button variant="outline-primary">Send Email</Button>}
-          {emails.length == 0 &&  <Button disabled variant="outline-primary">Send Email</Button>}
-        </Card.Body>
+          {<Button variant="outline-primary" disabled = {selectedBook.length === 0} onClick = {handleSubmit}>Send Email</Button>}
+          </Card.Body>
       </Card>
       
       </div>

@@ -4,30 +4,22 @@ import LocationMarker from './LocationMarker'
 import LocationInfoBox from './LocationInfoBox'
 import EmailInfoBox from './EmailInfoBox'
 import {Container, Row, Col} from 'react-bootstrap';
+import {useSelector, useDispatch} from 'react-redux';
 
 import './index.css';
 
-// define constants
-const eventData = [
-    {lat: 31.3,lng:31.3, info:'Book1', email: 'joshishreehar@gmail.com'},
-    {lat: 32.3,lng:31.3, info:'Book2', email: 'kalopool81@gmail.com'},
-    {lat: 33.3,lng:31.3, info:'Book3', email: 'sjoshi4@gmail.com'},
-    {lat: 34.3,lng:31.3, info:'Book4', email: 'kalopool00@gmail.com'},
-    {lat: 35.3,lng:31.3, info:'Book5', email: 'elonmusk@gmail.com'},    
-]
-
-const SearchMaps = ({books}) => {
+const SearchMaps = ({books, latitude, longitude}) => {
     const [locationInfo, setLocationInfo] = useState(null)
-    const [latitude, setLatitude] = useState('');
-    const [longitude, setLongitude] = useState('');
+    const [selectedBook, setSelectedBook] = useState([])
     const [emails, setEmails] = useState([]);
+    console.log("Printing the value of books from search maps", books)
+    console.log("Printing the value of selectedbook", locationInfo)
+    const sentId = useSelector((state)=> state.mailsent);
+    console.log("List of book ids inside the SearchMap function", sentId)
     const markers = books.map((book, index) => {
-        return <LocationMarker key={index} lat={book.latitude} lng={book.longitude} onClick={() => setLocationInfo({ title: book?.info, email: book?.email })} />
+        return <LocationMarker key={index} lat={book.latitude} lng={book.longitude} onClick={() => setLocationInfo(book)} />
     })
-    navigator.geolocation.getCurrentPosition(function(position) {
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
-    });
+    console.log("Selected book from the maps in the homepage", selectedBook);
     return (
         <Container>
   <Row>
@@ -47,8 +39,8 @@ const SearchMaps = ({books}) => {
 
     </Col>
     <Col sm={4}>
-    {<LocationInfoBox info={locationInfo} emails = {emails} setEmails = {setEmails} />}
-    {<EmailInfoBox emails = {emails} setEmails = {setEmails}/>}
+    {<LocationInfoBox books = {books} locationInfo={locationInfo} emails = {emails} setEmails = {setEmails} setSelectedBook = {setSelectedBook} selectedBook = {selectedBook}/>}
+    {<EmailInfoBox emails = {emails} setEmails = {setEmails} setSelectedBook = {setSelectedBook} selectedBook = {selectedBook}/>}
     
     </Col>
     

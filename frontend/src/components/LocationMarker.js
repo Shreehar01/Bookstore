@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaMapMarkerAlt } from "react-icons/fa";
 
-const LocationMarker = ({ lat, lng, onClick }) => {
+const LocationMarker = ({onClick }) => {
     let iconStyles = { color: "white", fontSize: "2.5em" };
     return (
         <div onClick={onClick}>
